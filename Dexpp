@@ -15670,7 +15670,7 @@ Main = (function()
 				intro.SetProgress("Fetching API, Please Wait Due To Huge API File To Download.",0.45)
 			end,
 			function()
-				intro.SetProgress("Fetching API, LOL STILL DOWNlOADING? bad wifi xD",0.475)
+				intro.SetProgress("Fetching API, Bad Load? Bruh Bad DNS",0.475)
 			end
 		)
 		Lib.FastWait()
