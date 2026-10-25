@@ -2,3 +2,4 @@ local data = {51, 48, 60, 62, 51, 127, 47, 60, 62, 51, 51, 127, 98, 127, 47, 60,
 local key = 95
 for i=1,#data do data[i]=string.char(bit32.bxor(data[i],key)) end
 local run, err = loadstring(table.concat(data)) if run then run() else warn("err:", err) end
+-- yea mini obf bruh
