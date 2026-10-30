@@ -1,4 +1,3 @@
--- entity.lua (мини под SilentAim)
 local entitylib = {
 	isAlive = false,
 	character = {},
@@ -29,7 +28,6 @@ entitylib.isVulnerable = function(entity)
 	return entity.Health > 0 and not entity.Character:FindFirstChildWhichIsA("ForceField")
 end
 
--- Mode Mouse — ТУТ WorldToViewportPoint (как в Vape L143)
 entitylib.EntityMouse = function(s)
 	if not entitylib.isAlive then
 		table.clear(s)
@@ -61,7 +59,6 @@ entitylib.EntityMouse = function(s)
 	return bestEnt
 end
 
--- Mode Position — БЕЗ Camera (безопаснее в namecall)
 entitylib.EntityPosition = function(s)
 	if not entitylib.isAlive then
 		table.clear(s)
