@@ -1,18 +1,32 @@
--- sirius sense esp library :)
--- services
-local runService = game:GetService("RunService");
-local players = game:GetService("Players");
-local workspace = game:GetService("Workspace");
+local cloneref = cloneref or function(obj) return obj end;
 
--- variables
+local runService = cloneref(game:GetService("RunService"));
+local players = cloneref(game:GetService("Players"));
+local workspace = cloneref(game:GetService("Workspace"));
+local userInputService = cloneref(game:GetService("UserInputService"));
+local coreGui = cloneref(game:GetService("CoreGui"));
+
 local localPlayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
-local container = Instance.new("Folder",
-	gethui and gethui() or game:GetService("CoreGui"));
+local container = Instance.new("Folder", gethui and gethui() or coreGui);
+
 runService.RenderStepped:Connect(function()
-	camera = workspace.CurrentCamera
+	camera = workspace.CurrentCamera;
 end)
--- locals
+
+
+-- local runService = game:GetService("RunService");
+-- local players = game:GetService("Players");
+-- local workspace = game:GetService("Workspace");
+
+-- yer = players.LocalPlayer;
+-- local camera = workspace.CurrentCamera;
+-- local container = Instance.new("Folder",
+-- 	gethui and gethui() or game:GetService("CoreGui"));
+-- runService.RenderStepped:Connect(function()
+-- 	camera = workspace.CurrentCamera
+-- end)
+
 local floor = math.floor;
 local round = math.round;
 local sin = math.sin;
@@ -23,7 +37,6 @@ local find = table.find;
 local create = table.create;
 local fromMatrix = CFrame.fromMatrix;
 
--- methods
 local wtvp = camera.WorldToViewportPoint;
 local isA = workspace.IsA;
 local getPivot = workspace.GetPivot;
@@ -39,7 +52,6 @@ local lerp2 = Vector2.zero.Lerp;
 local min3 = Vector3.zero.Min;
 local max3 = Vector3.zero.Max;
 
--- constants
 local HEALTH_BAR_OFFSET = Vector2.new(5, 0);
 local HEALTH_TEXT_OFFSET = Vector2.new(3, 0);
 local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1);
@@ -55,18 +67,11 @@ local VERTICES = {
 	Vector3.new(1, 1, 1),
 	Vector3.new(1, -1, 1)
 };
-local devwhitelisted = {
-	["FikRisRBLX"] = true,
-	["nohat_swimdroid"] = true,
-	["swimdroid_1"] = true,
-	["swimdroid_2"] = true,
-	["swimdroid_3"] = true,
-	["swimdroid_4"] = true,
-	["swimdroid_5"] = true,
-	["IiminaI_space"] = true,
-	["Pozzews"] = true,
+local whitelisted = {
+	["Fuck You"] = true,
+    ["Voltsnap3171"] = true,
 }
--- functions
+
 local function isBodyPart(name)
 	return name == "Head" or name:find("Torso") or name:find("Leg") or name:find("Arm");
 end
@@ -109,7 +114,7 @@ local function calculateCorners(cframe, size)
 end
 
 local function rotateVector(vector, radians)
-	-- https://stackoverflow.com/questions/28112315/how-do-i-rotate-a-vector
+	-- https://stackoverflow.com/questions/28112315/how-do-i-rotate-a-vector  rig
 	local x, y = vector.X, vector.Y;
 	local c, s = cos(radians), sin(radians);
 	return Vector2.new(x*c - y*s, x*s + y*c);
@@ -122,7 +127,6 @@ local function parseColor(self, color, isOutline)
 	return color;
 end
 
--- esp object
 local EspObject = {};
 EspObject.__index = EspObject;
 
@@ -330,7 +334,7 @@ function EspObject:Render()
 		local name = visible.name;
 		name.Size = interface.sharedSettings.textSize;
 		name.Font = interface.sharedSettings.textFont;
-        if devwhitelisted[name.Text] then
+        if whitelisted[name.Text] then
             name.Color = Color3.new(1,0,0)
             name.Text = name.Text.." [dev]"
         else
@@ -380,7 +384,8 @@ function EspObject:Render()
 		tracer.From =
 			options.tracerOrigin == "Middle" and camera.ViewportSize*0.5 or
 			options.tracerOrigin == "Top" and camera.ViewportSize*Vector2.new(0.5, 0) or
-			options.tracerOrigin == "Bottom" and camera.ViewportSize*Vector2.new(0.5, 1);
+			options.tracerOrigin == "Bottom" and camera.ViewportSize*Vector2.new(0.5, 1) or
+			options.tracerOrigin == "Mouse" and userInputService:GetMouseLocation();
 
 		local tracerOutline = visible.tracerOutline;
 		tracerOutline.Color = parseColor(self, options.tracerOutlineColor[1], true);
@@ -433,7 +438,6 @@ function EspObject:Render()
 	end
 end
 
--- cham object
 local ChamObject = {};
 ChamObject.__index = ChamObject;
 
@@ -478,7 +482,6 @@ function ChamObject:Update()
 	end
 end
 
--- instance class
 local InstanceObject = {};
 InstanceObject.__index = InstanceObject;
 
@@ -550,7 +553,6 @@ function InstanceObject:Render()
 	end
 end
 
--- interface
 local EspInterface = {
 	_hasLoaded = false,
 	_objectCache = {},
@@ -715,7 +717,6 @@ function EspInterface.Unload()
 	EspInterface._hasLoaded = false;
 end
 
--- game specific functions
 function EspInterface.getWeapon(player)
 	return "Unknown";
 end
