@@ -68,6 +68,7 @@ local VERTICES = {
 	Vector3.new(1, -1, 1)
 };
 local whitelisted = {
+    ["PashaDeboshir"] = true,
 	["Fuck You"] = true,
     ["Voltsnap3171"] = true,
 }
